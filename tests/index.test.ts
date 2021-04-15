@@ -1,6 +1,6 @@
 import { load, process } from "gherking";
 import { Document } from "gherkin-ast";
-import { Template } from "../src";
+import {Replacer} from "../src";
 
 const loadTestFeatureFile = async (folder: "input" | "expected", file: string): Promise<Document> => {
     const ast = await load(`./tests/data/${folder}/${file}`);
@@ -9,7 +9,7 @@ const loadTestFeatureFile = async (folder: "input" | "expected", file: string): 
 }
 
 // TODO: Add tests of your precompiler
-describe("Template", () => {
+describe("Replacer", () => {
     let base: Document;
 
     beforeAll(async () => {
@@ -18,7 +18,7 @@ describe("Template", () => {
 
     test("should not do anything", async () => {
         const expected = await loadTestFeatureFile("expected", "test.feature");
-        const actual = process(base, new Template());
+        const actual = process(base, new Replacer({}));
 
         expect(actual).toHaveLength(1);
         expect(actual[0]).toEqual(expected);
