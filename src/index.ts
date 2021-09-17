@@ -1,13 +1,11 @@
 import { PreCompiler } from "gherking";
 import { Background, DataTable, DocString, Examples, Feature, Rule, Scenario, ScenarioOutline, Step, TableRow, Tag } from "gherkin-ast";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-// const debug = require("debug")("gpc:template");
+//eslint-disable-next-line @typescript-eslint/no-var-requires
+//const debug = require("debug")("gpc:template");
 
 type Config = {
     [key: string]: string;
 };
-
-// type FeatureElement = Background | DataTable | DocString | Examples | Feature | Rule | Scenario | ScenarioOutline | Step | TableCell | TableRow | Tag;
 
 class Replacer implements PreCompiler {
     config: Config;
@@ -18,18 +16,17 @@ class Replacer implements PreCompiler {
         this.config = config;
     }
 
-    //TODO solve type with 
-    _replaceAll(obj: any, ...keys: string[]) {
+    _replaceAll<T, K extends keyof T>(obj: T, ...keys: K[]) {
         keys.forEach(key => {
             if (obj[key]) {
                 Object.keys(this.config).forEach(toReplace => {
                     const replaceWith = this.config[toReplace];
-                    obj[key] = obj[key].replace(new RegExp('\\$\\{' + toReplace + '\\}', 'gi'), replaceWith);
+                        //@ts-ignore
+                        obj[key] = obj[key].replace(new RegExp('\\$\\{' + toReplace + '\\}', 'gi'), replaceWith);
                 });
             }
         });
     }
-
 
     _replaceInTableRow(row: TableRow) {
         row.cells.forEach(cell => {
@@ -42,7 +39,7 @@ class Replacer implements PreCompiler {
     }
 
     onRule(rule: Rule) {
-        this._replaceAll(rule);
+        this._replaceAll(rule, 'name', 'description');
     }
 
     onBackground(background: Background) {

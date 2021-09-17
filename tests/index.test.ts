@@ -1,6 +1,6 @@
 import { load, process } from "gherking";
 import { Document } from "gherkin-ast";
-import {Replacer} from "../src";
+import Replacer = require("../src");
 
 const loadTestFeatureFile = async (folder: "input" | "expected", file: string): Promise<Document> => {
     const ast = await load(`./tests/data/${folder}/${file}`);
@@ -8,7 +8,6 @@ const loadTestFeatureFile = async (folder: "input" | "expected", file: string): 
     return ast[0];
 }
 
-// TODO: Add tests of your precompiler
 describe("Replacer", () => {
     let base: Document;
 
@@ -16,11 +15,20 @@ describe("Replacer", () => {
         base = await loadTestFeatureFile("input", "test.feature");
     });
 
-    test("should not do anything", async () => {
+    test("Should replace keywords in the feature file", async () => {
+        const testConfig = {
+            keyword1: "value1",
+            keyword2: "value2"
+        }
+
         const expected = await loadTestFeatureFile("expected", "test.feature");
-        const actual = process(base, new Replacer({}));
+        const actual = process(base, new Replacer(testConfig));
 
         expect(actual).toHaveLength(1);
         expect(actual[0]).toEqual(expected);
+    });
+
+    test("Should throw error is config is not an Object", async () => {
+        expect(() => process(base, new Replacer("test" as any))).toThrow(/Configuration is not an object/);
     });
 });
