@@ -1,7 +1,7 @@
 import { PreCompiler } from "gherking";
-import { Background, DataTable, DocString, Examples, Feature, Rule, Scenario, ScenarioOutline, Step, TableRow, Tag } from "gherkin-ast";
-//eslint-disable-next-line @typescript-eslint/no-var-requires
-//const debug = require("debug")("gpc:template");
+import { Background, DocString, Examples, Feature, Rule, Scenario, ScenarioOutline, Step, TableRow, Tag } from "gherkin-ast";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const debug = require("debug")("gpc:replacer");
 
 type Config = {
     [key: string]: string;
@@ -9,79 +9,71 @@ type Config = {
 
 class Replacer implements PreCompiler {
     config: Config;
+
     constructor(config: Config) {
+        debug('Initialize(config: %o)', config);
         if (typeof config !== 'object') {
             throw new TypeError('Configuration is not an object: ' + config);
         }
         this.config = config;
     }
 
-    _replaceAll<T, K extends keyof T>(obj: T, ...keys: K[]) {
+    private replaceAll<T, K extends keyof T>(obj: T, ...keys: K[]): void {
         keys.forEach(key => {
             if (obj[key]) {
                 Object.keys(this.config).forEach(toReplace => {
                     const replaceWith = this.config[toReplace];
-                        //@ts-ignore
-                        obj[key] = obj[key].replace(new RegExp('\\$\\{' + toReplace + '\\}', 'gi'), replaceWith);
+                    //@ts-ignore
+                    obj[key] = obj[key].replace(new RegExp('\\$\\{' + toReplace + '\\}', 'gi'), replaceWith);
                 });
             }
         });
     }
 
-    _replaceInTableRow(row: TableRow) {
+    private replaceInTableRow(row: TableRow) {
         row.cells.forEach(cell => {
-            this._replaceAll(cell, 'value');
+            this.replaceAll(cell, 'value');
         });
     }
 
-    onFeature(feature: Feature) {
-        this._replaceAll(feature, 'name', 'description');
+    onFeature(feature: Feature): void {
+        this.replaceAll(feature, 'name', 'description');
     }
 
-    onRule(rule: Rule) {
-        this._replaceAll(rule, 'name', 'description');
+    onRule(rule: Rule): void {
+        this.replaceAll(rule, 'name', 'description');
     }
 
-    onBackground(background: Background) {
-        this._replaceAll(background, 'name', 'description');
+    onBackground(background: Background): void {
+        this.replaceAll(background, 'name', 'description');
     }
 
-    onScenarioOutline(scenarioOutline: ScenarioOutline) {
-        this._replaceAll(scenarioOutline, 'name', 'description');
+    onScenarioOutline(scenarioOutline: ScenarioOutline): void {
+        this.replaceAll(scenarioOutline, 'name', 'description');
     }
 
-    onScenario(scenario: Scenario) {
-        this._replaceAll(scenario, 'name', 'description');
+    onScenario(scenario: Scenario): void {
+        this.replaceAll(scenario, 'name', 'description');
     }
 
-    onStep(step: Step) {
-        this._replaceAll(step, 'text');
+    onStep(step: Step): void {
+        this.replaceAll(step, 'text');
     }
 
-    onTag(tag: Tag) {
-        this._replaceAll(tag, 'name');
+    onTag(tag: Tag): void {
+        this.replaceAll(tag, 'name');
     }
 
-    onExamples(examples: Examples) {
-        this._replaceAll(examples, 'name');
+    onExamples(examples: Examples): void {
+        this.replaceAll(examples, 'name');
     }
 
-    onDocString(docString: DocString) {
-        this._replaceAll(docString, 'content');
+    onDocString(docString: DocString): void {
+        this.replaceAll(docString, 'content');
     }
 
-    onDataTable(dataTable: DataTable) {
-        dataTable.rows.forEach(row => {
-            this._replaceInTableRow(row);
-        })
-    }
-
-    onExampleRow(exampleRow: TableRow) {
-        this._replaceInTableRow(exampleRow);
-    }
-
-    onExampleHeader(exampleHeader: TableRow) {
-        this._replaceInTableRow(exampleHeader);
+    onTableRow(exampleRow: TableRow): void {
+        this.replaceInTableRow(exampleRow);
     }
 }
-export = Replacer
+export = Replacer;

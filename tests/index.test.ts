@@ -1,5 +1,5 @@
 import { load, process } from "gherking";
-import { Document } from "gherkin-ast";
+import { Document, pruneID } from "gherkin-ast";
 import Replacer = require("../src");
 
 const loadTestFeatureFile = async (folder: "input" | "expected", file: string): Promise<Document> => {
@@ -24,11 +24,15 @@ describe("Replacer", () => {
         const expected = await loadTestFeatureFile("expected", "test.feature");
         const actual = process(base, new Replacer(testConfig));
 
+        pruneID(actual);
+        pruneID(expected);
+
         expect(actual).toHaveLength(1);
         expect(actual[0]).toEqual(expected);
     });
 
     test("Should throw error is config is not an Object", async () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         expect(() => process(base, new Replacer("test" as any))).toThrow(/Configuration is not an object/);
     });
 });
