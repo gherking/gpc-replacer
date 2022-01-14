@@ -68,3 +68,30 @@ Feature: Hello world value1
       Examples: Replace in table row
         | key    |
         | value2 |
+
+  Rule: Rule name with replaced value2
+    Rule Description and replaced value1
+
+    @tag2 @value1
+    Scenario: value1 Name of scenario
+      value2 Description of the scenario
+
+      Given this is a given value1
+      And this is a given step too
+      When this is a when step with data table
+        | val1 |
+        | val2 |
+        | val3 |
+      And this is a when step with data table too
+        | col1 | col2 |
+        | val1 | val2 |
+        | val3 | val4 |
+      And this is a when step with doc string
+        """
+        Hello world
+        Hello World
+        hello World
+        hello world
+        """
+      Then it should be a then step
+      And it should be a then step too
