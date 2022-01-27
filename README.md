@@ -65,6 +65,7 @@ It can find and replace such strings in the following parts of a
 feature file:
 
 * Feature: name, description
+* Rule: name, description
 * Background: name, description
 * Scenario Outline: name, decription
 * Scenario: name, description
