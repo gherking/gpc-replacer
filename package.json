@@ -22,7 +22,8 @@
     "gherkin",
     "gherking",
     "precompiler",
-    "feature file"
+    "feature",	
+    "file"
   ],
   "author": "GherKing (https://github.com/gherking)",
   "license": "MIT",

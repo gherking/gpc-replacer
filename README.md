@@ -13,16 +13,18 @@ This GherKing Precompiler is responsible to replace keys in feature files with g
 ```javascript
 'use strict';
 const compiler = require('gherking');
-const {replacer} = require('gpc-replacer');
+const Replacer = require('gpc-replacer');
 
-let ast = compiler.load('./features/src/login.feature');
+let ast = await compiler.load('./features/src/login.feature');
 ast = compiler.process(
     ast,
-    new replacer({
+    new Replacer({
         // config
+        stringToBeReplaced1: "stringToReplaceWith1",
+        stringToBeReplaced2: "stringToReplaceWith2",
     })
 );
-compiler.save('./features/dist/login.feature', ast, {
+await compiler.save('./features/dist/login.feature', ast, {
     lineBreak: '\r\n'
 });
 ```
@@ -30,20 +32,56 @@ compiler.save('./features/dist/login.feature', ast, {
 ```typescript
 'use strict';
 import {load, process, save} from "gherking";
-import {replace} from "gpc-template";
+import Replacer from "gpc-replacer";
 
-let ast = load("./features/src/login.feature");
+let ast = await load("./features/src/login.feature");
 ast = process(
     ast,
-    new replace({
+    new Replacer({
         // config
+        stringToBeReplaced1: "stringToReplaceWith1",
+        stringToBeReplaced2: "stringToReplaceWith2",
     })
 );
-save('./features/dist/login.feature', ast, {
+await save('./features/dist/login.feature', ast, {
     lineBreak: '\r\n'
 });
 ```
 
-For detailed documentation see the [TypeDocs documentation](https://gherking.github.io/gpc-replacer/).
+This Replacer is responsible for exchanging predefined strings in the
+feature files. It inserts the provided text in the place held for them.
 
-This package uses [debug](https://www.npmjs.com/package/debug) for logging.
+As an input it needs the feature file to be modified, and a config
+json file, which contains the words to be replaced, and the words
+to replace them with. It is a regular json, where the keys are the
+words need replacing, and their values are the words they will get
+replaced by.
+In case the config file is not available, or its format is incorrect
+the Replacer throws an error.
+
+It replaces strings given in a format '${to_replace}' in the input
+feature.
+It can find and replace such strings in the following parts of a
+feature file:
+
+* Feature: name, description
+* Background: name, description
+* Scenario Outline: name, decription
+* Scenario: name, description
+* Step: text
+* Tag: name
+* Examples: name
+* Document string: content
+* Data table: header name, cell values
+
+See examples for the input files and an output in the test/data folder.
+
+## Other
+
+This package uses [debug](https://www.npmjs.com/package/debug) for logging, use `gpc:replacer` :
+
+```shell
+DEBUG=gpc:remove-duplicates* gherking ...
+```
+
+For detailed documentation see the [TypeDocs documentation](https://gherking.github.io/gpc-replacer/).
