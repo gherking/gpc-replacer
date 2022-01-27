@@ -81,7 +81,7 @@ See examples for the input files and an output in the test/data folder.
 This package uses [debug](https://www.npmjs.com/package/debug) for logging, use `gpc:replacer` :
 
 ```shell
-DEBUG=gpc:remove-duplicates* gherking ...
+DEBUG=gpc:replacer* gherking ...
 ```
 
 For detailed documentation see the [TypeDocs documentation](https://gherking.github.io/gpc-replacer/).
