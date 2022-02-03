@@ -32,7 +32,7 @@ await compiler.save('./features/dist/login.feature', ast, {
 ```typescript
 'use strict';
 import {load, process, save} from "gherking";
-import Replacer from "gpc-replacer";
+import Replacer = require("gpc-replacer");
 
 let ast = await load("./features/src/login.feature");
 ast = process(
