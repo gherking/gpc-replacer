@@ -1,6 +1,6 @@
 {
   "name": "gpc-replacer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This GherKing Precompiler is responsible to replace keys in feature files with given values.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -57,8 +57,8 @@
   },
   "dependencies": {
     "debug": "^4.3.1",
-    "gherkin-ast": "^3.2.1",
-    "gherking": "^2.0.0"
+    "gherkin-ast": "^3.3.0",
+    "gherking": "^2.1.0"
   },
   "jest": {
     "reporters": [

@@ -13,7 +13,7 @@ This GherKing Precompiler is responsible to replace keys in feature files with g
 ```javascript
 'use strict';
 const compiler = require('gherking');
-const Replacer = require('gpc-replacer');
+const { default: Replacer } = require('gpc-replacer');
 
 let ast = await compiler.load('./features/src/login.feature');
 ast = compiler.process(
@@ -32,7 +32,7 @@ await compiler.save('./features/dist/login.feature', ast, {
 ```typescript
 'use strict';
 import {load, process, save} from "gherking";
-import Replacer = require("gpc-replacer");
+import Replacer, { ReplacerConfig } from "gpc-replacer";
 
 let ast = await load("./features/src/login.feature");
 ast = process(
@@ -59,21 +59,23 @@ replaced by.
 In case the config file is not available, or its format is incorrect
 the Replacer throws an error.
 
-It replaces strings given in a format '${to_replace}' in the input
+It replaces strings given in a format `${to_replace}` in the input
 feature.
-It can find and replace such strings in the following parts of a
+
+It can find and replace such strings in the textual parts of a
 feature file:
 
-* Feature: name, description
-* Rule: name, description
-* Background: name, description
-* Scenario Outline: name, decription
-* Scenario: name, description
-* Step: text
-* Tag: name
-* Examples: name
-* Document string: content
-* Data table: header name, cell values
+* **Document**: comments
+* **Feature**: name, description, comments
+* **Rule**: name, description, comments
+* **Background**: name, description, comments
+* **Scenario Outline**: name, decription, comments
+* **Scenario**: name, description, comments
+* **Step**: text, comment
+* **Tag**: name, value, comments
+* **Examples**: name, comments
+* **Doc String**: content, comment
+* **Data Table**, **Table Rows**: cell values, comments
 
 See examples for the input files and an output in the test/data folder.
 

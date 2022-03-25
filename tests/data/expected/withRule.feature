@@ -4,6 +4,7 @@ Feature: Hello world value1
   I want to do value2
   So that I am smth
 
+  @name(value1)
   Rule: Rule name with replaced value2
     Rule Description and replaced value1
 

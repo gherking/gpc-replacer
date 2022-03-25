@@ -4,6 +4,7 @@ Feature: Hello world ${keyword1}
   I want to do ${keyword2}
   So that I am smth
 
+  @name(${keyword1})
   Rule: Rule name with replaced ${keyword2}
     Rule Description and replaced ${keyword1}
 
