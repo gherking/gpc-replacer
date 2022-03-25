@@ -13,7 +13,7 @@ This GherKing Precompiler is responsible to replace keys in feature files with g
 ```javascript
 'use strict';
 const compiler = require('gherking');
-const Replacer = require('gpc-replacer');
+const { default: Replacer } = require('gpc-replacer');
 
 let ast = await compiler.load('./features/src/login.feature');
 ast = compiler.process(
@@ -32,7 +32,7 @@ await compiler.save('./features/dist/login.feature', ast, {
 ```typescript
 'use strict';
 import {load, process, save} from "gherking";
-import Replacer = require("gpc-replacer");
+import Replacer, { ReplacerConfig } from "gpc-replacer";
 
 let ast = await load("./features/src/login.feature");
 ast = process(
